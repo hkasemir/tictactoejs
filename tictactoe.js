@@ -1,11 +1,9 @@
-
-
-BOARD_SIZE = 3
-EMPTY_KEY = ' '
-PLAYER_KEY = 'x'
-COMPUTER_KEY = 'o'
-IN_A_ROW_TO_WIN = 3
-DIRECTIONS = [
+var tttBoard, clicks=0;
+var EMPTY_KEY = ' '
+var PLAYER_KEY = 'x'
+var COMPUTER_KEY = 'o'
+var IN_A_ROW_TO_WIN = 3
+var DIRECTIONS = [
     [0, 1],      // Check to the right
     [1, 0],      // Check down the column
     [1, 1],      // Check diagonal to the right
@@ -26,14 +24,14 @@ function createBoard(size){
 	return rows;
 };
 
-rowAlpha = []
-for (var i = 0; i < BOARD_SIZE; i++) {
-  rowAlpha.push(String.fromCharCode(65+i))
-}
 
 
 function stringBoard(board){
   var strBoard = '';
+  var rowAlpha = []
+  for (var i = 0; i < board.length ; i++) {
+    rowAlpha.push(String.fromCharCode(65+i))
+  }
   
   // column numbers
   for (var k = 0; k <= board.length; k++) {
@@ -101,6 +99,7 @@ function checkWin(board){
       var pos = [row, col];
       for (var dir = 0; dir < DIRECTIONS.length; dir++){
         if (checkDirection(board, pos, DIRECTIONS[dir])){
+          console.log('win!');
           return true
         }
       }
@@ -115,19 +114,59 @@ function checkWin(board){
   }
   return undefined
 };
-          
+     
+
+function createTable(brd){
+  var gBoard = document.getElementById("gameboard");
+  for(var i = 0; i<brd.length; i++){
+    var bRow = document.createElement('div');
+    bRow.className = "row";
+    for(var j = 0; j<brd.length; j++){
+      var bData = document.createElement('div');
+      bData.className = "col";
+      bData.id = "r"+i+"c"+j;
+      bData.addEventListener("click", makeMove);
+      bRow.appendChild(bData);
+    }
+	gBoard.appendChild(bRow);
+  }
+};
+
+
+function makeMove(event){
+  var ex = document.createElement('div');
+  var o = document.createElement('div');
+  ex.className = 'x';
+  o.className = 'o';
+  clickToBoard(event.target.id)
+  checkWin(tttBoard)
+}
+
+function clickToBoard(boxId){
+  var box = document.getElementById(boxId);
+  var idArray = boxId.split('');
+  var row = idArray[1];
+  var col = idArray[3];
+  if(clicks%2 === 0){
+    box.appendChild(ex);
+    tttBoard[row][col] = 1;
+  } else {
+    box.appendChild(o);
+    tttBoard[row][col] = -1;
+  }
+  box.removeEventListener("click", makeMove);
+}
 
 
 
 
-var board = createBoard(BOARD_SIZE);
-console.log(stringBoard(board));
-computerMove(board);
-console.log(board)
-computerMove(board);
-console.log(board)
-computerMove(board);
-console.log(board)
-computerMove(board);
-console.log(board)
 
+window.onload = function() {
+
+  var gameboard = document.getElementById("gameboard");
+  var size = prompt('what size gameboard?');
+  tttBoard = createBoard(size);
+  createTable(tttBoard);
+
+
+};
