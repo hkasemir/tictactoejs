@@ -134,15 +134,15 @@ function createTable(brd){
 
 
 function makeMove(event){
-  var ex = document.createElement('div');
-  var o = document.createElement('div');
-  ex.className = 'x';
-  o.className = 'o';
   clickToBoard(event.target.id)
   checkWin(tttBoard)
 }
 
 function clickToBoard(boxId){
+  var ex = document.createElement('div');
+  var o = document.createElement('div');
+  ex.className = 'x';
+  o.className = 'o';
   var box = document.getElementById(boxId);
   var idArray = boxId.split('');
   var row = idArray[1];
@@ -150,9 +150,11 @@ function clickToBoard(boxId){
   if(clicks%2 === 0){
     box.appendChild(ex);
     tttBoard[row][col] = 1;
+    clicks++;
   } else {
     box.appendChild(o);
     tttBoard[row][col] = -1;
+    clicks++;
   }
   box.removeEventListener("click", makeMove);
 }
