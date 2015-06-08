@@ -1,3 +1,4 @@
+
 var tttBoard, clicks=0;
 var EMPTY_KEY = ' '
 var PLAYER_KEY = 'x'
@@ -23,54 +24,6 @@ function createBoard(size){
 	}
 	return rows;
 };
-
-
-
-function stringBoard(board){
-  var strBoard = '';
-  var rowAlpha = []
-  for (var i = 0; i < board.length ; i++) {
-    rowAlpha.push(String.fromCharCode(65+i))
-  }
-  
-  // column numbers
-  for (var k = 0; k <= board.length; k++) {
-    strBoard += ' ' + k.toString() + ' ';
-  };
-  strBoard += '\n';
-  
-  for (var i = 0; i < board.length; i++){
-    // puts the signifying A, B, C etc. next to the rows.
-    strBoard += ' ' + rowAlpha[i] + ' ';
-    for (var j = 0; j < board.length; j++){
-      key = EMPTY_KEY;
-      if (board[i][j] == 1){
-        key = PLAYER_KEY
-      } else if (board[i][j] == -1){
-        key = COMPUTER_KEY
-      };
-      strBoard += '[' + key + ']';
-    }
-    strBoard += '\n';
-  }
-  return strBoard
-};
-
-function computerMove(board){
-  var row = 1, column = 1, esc = 0;
-  while (board[row][column] != 0){
-    column = Math.floor(Math.random() * board.length);
-    console.log(' computed column: ' + column)
-    row = Math.floor(Math.random() * board.length);
-    console.log(' computed row: ' + row)
-    esc += 1;
-    if (esc >=20){
-      console.log('too many while loops');
-      break
-    }
-  }
-  board[row][column] = -1;
-}
 
 function checkDirection(board, pos, dir){
   var char = board[pos[0]][pos[1]];
@@ -116,7 +69,7 @@ function checkWin(board){
 };
      
 
-function createTable(brd){
+function drawBoard(brd){
   var gBoard = document.getElementById("gameboard");
   for(var i = 0; i<brd.length; i++){
     var bRow = document.createElement('div');
@@ -134,8 +87,8 @@ function createTable(brd){
 
 
 function makeMove(event){
-  clickToBoard(event.target.id)
-  checkWin(tttBoard)
+  clickToBoard(event.target.id);
+  checkWin(tttBoard);
 }
 
 function clickToBoard(boxId){
@@ -163,12 +116,12 @@ function clickToBoard(boxId){
 
 
 
-window.onload = function() {
+
+var createGame = function() {
 
   var gameboard = document.getElementById("gameboard");
   var size = prompt('what size gameboard?');
   tttBoard = createBoard(size);
-  createTable(tttBoard);
-
-
+  drawBoard(tttBoard);
 };
+window.addEventListener('load', createGame);
