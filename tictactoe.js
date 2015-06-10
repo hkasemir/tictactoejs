@@ -1,19 +1,19 @@
-
-var tttBoard, clicks=0;
-var EMPTY_KEY = ' '
-var PLAYER_KEY = 'x'
-var COMPUTER_KEY = 'o'
-var IN_A_ROW_TO_WIN = 3
+var tttBoard, clicks=0, size = 3;
 var DIRECTIONS = [
     [0, 1],      // Check to the right
     [1, 0],      // Check down the column
     [1, 1],      // Check diagonal to the right
     [1, -1]      // Check diagonal to the left
-]
+];
 
-
-
-function createBoard(size){
+function createBoard(size){    
+  if(size == 3){
+    IN_A_ROW_TO_WIN = 3;
+  } else if (size == 10){
+    IN_A_ROW_TO_WIN = 4;
+  } else {
+    IN_A_ROW_TO_WIN = 5;
+  }
 	var rows = [];
 	for(var i = 0; i<size; i++){
 		var cols = [];
@@ -52,7 +52,9 @@ function checkWin(board){
       var pos = [row, col];
       for (var dir = 0; dir < DIRECTIONS.length; dir++){
         if (checkDirection(board, pos, DIRECTIONS[dir])){
-          console.log('win!');
+          var winner = document.getElementById('gamestatus')
+          winner.innerHTML = 'WINNER!';
+          winner.style.visibility = 'visible';
           return true
         }
       }
@@ -65,7 +67,11 @@ function checkWin(board){
       }
     }
   }
+  var tie = document.getElementById('gamestatus')
+  tie.innerHTML = 'TIE!';
+  tie.style.visibility = 'visible';
   return undefined
+
 };
      
 
@@ -78,6 +84,8 @@ function drawBoard(brd){
       var bData = document.createElement('div');
       bData.className = "col";
       bData.id = "r"+i+"c"+j;
+      bData.setAttribute('data-row', i);
+      bData.setAttribute('data-col', j);
       bData.addEventListener("click", makeMove);
       bRow.appendChild(bData);
     }
@@ -92,36 +100,41 @@ function makeMove(event){
 }
 
 function clickToBoard(boxId){
-  var ex = document.createElement('div');
-  var o = document.createElement('div');
-  ex.className = 'x';
-  o.className = 'o';
   var box = document.getElementById(boxId);
-  var idArray = boxId.split('');
-  var row = idArray[1];
-  var col = idArray[3];
+  var row = box.getAttribute('data-row');
+  var col = box.getAttribute('data-col');
   if(clicks%2 === 0){
-    box.appendChild(ex);
+    box.className = 'col x';
     tttBoard[row][col] = 1;
     clicks++;
   } else {
-    box.appendChild(o);
+    box.className = 'col o';
     tttBoard[row][col] = -1;
     clicks++;
   }
   box.removeEventListener("click", makeMove);
 }
 
-
-
-
-
-
-var createGame = function() {
-
+function refreshBoard(){
+  document.getElementById('gamestatus').style.visibility = 'hidden';
   var gameboard = document.getElementById("gameboard");
-  var size = prompt('what size gameboard?');
+  gameboard.innerHTML = '';
   tttBoard = createBoard(size);
   drawBoard(tttBoard);
+}
+
+var createGame = function() {
+  var refreshButton = document.getElementById('refresh');
+  refreshButton.addEventListener('click', refreshBoard);
+
+  var boardSizeSelector = document.getElementById("boardsize");
+  size = boardSizeSelector.selectedOptions[0].label;
+  boardSizeSelector.addEventListener('change', function(){
+    size = boardSizeSelector.selectedOptions[0].label;
+    refreshBoard();
+  });
+  
+  refreshBoard();
+  
 };
 window.addEventListener('load', createGame);

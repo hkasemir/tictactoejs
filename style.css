@@ -1,17 +1,73 @@
+@import url(http://fonts.googleapis.com/css?family=Montserrat);
+
+
+body {
+  font-family: 'Montserrat';
+  background-color: #f0f0f0;
+}
+
+option {
+  font-family: 'Montserrat'; 
+}
+
 #gameboard {
   background-color: black;
-  height: 400px;
-  width: 400px;
+  height: 450px;
+  width: 450px;
   display: flex;
   flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#gamecontrols {
+  display: flex;
+  align-items: center;
+  width: 450px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#gamecontrols button{
+  width: 100px;
+  height: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  float: right;
+  font-family: 'Montserrat';
+
+}
+
+#gamecontrols select {
+  margin-right: 30px;
+  margin-left: 20px;
+  float: left;
+  font-family: 'Montserrat';
+}
+
+#gamecontrols p {
+  display: inline;
+  float: left;
+}
+
+#gamestatus {
+  text-align: center;
+  visibility: hidden;
+}
+
+#refresh  {
+  margin-left: 30px;
 }
 
 .col {
   flex: 1;
   border: 1px solid black;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition: background-color .25s ease-in-out;
+}
+
+.col:hover {
+  transition: background-color .25s ease-in-out;
+  background-color: #d0d0d0;
 }
 
 .row {
@@ -21,16 +77,12 @@
   flex:1;
 }
 
-.o {
-  height: 20px;
-  width: 20px;
-  border-radius: 20px;
-  background: red;
-  
+.o, .o:hover{
+  background-color: red;
 }
 
-.x {
-  height: 20px;
-  width: 20px;
-  background: black;
+.x, .x:hover {
+  background-color: #303030;
 }
+
+
